@@ -506,25 +506,6 @@ img {
     z-index: 2;
 }
 
-/* View Details Button in Gallery */
-.view-details-btn {
-    background: var(--arab-red);
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 0.5rem;
-    font-family: 'Roboto Mono', monospace;
-    font-size: 0.8rem;
-    transition: var(--transition-normal);
-}
-
-.view-details-btn:hover {
-    background: var(--arab-green);
-    transform: translateY(-2px);
-}
-
 /* ====== PROJECTS SECTION ====== */
 .projects-container {
     display: flex;
@@ -579,7 +560,7 @@ img {
     border-radius: 5px;
     overflow: hidden;
     box-shadow: var(--shadow-md);
-    min-width: 0;
+    min-width: 0; /* Important for flexbox to work properly */
 }
 
 .game-embed {
@@ -609,7 +590,7 @@ img {
 
 .project-content {
     flex: 1;
-    min-width: 0;
+    min-width: 0; /* Important for text wrapping */
 }
 
 .project-title {
@@ -650,32 +631,10 @@ img {
     border-radius: 5px;
     font-weight: 700;
     transition: var(--transition-normal);
-    margin-right: 1rem;
 }
 
 .project-link:hover {
     background-color: var(--arab-green);
-    box-shadow: 0 5px 15px rgba(0, 122, 61, 0.4);
-}
-
-/* Project Details Button */
-.project-details-btn {
-    display: inline-block;
-    padding: 0.8rem 2rem;
-    background-color: transparent;
-    color: var(--arab-green);
-    border: 2px solid var(--arab-green);
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: 700;
-    transition: var(--transition-normal);
-    cursor: pointer;
-    font-family: 'Roboto Mono', monospace;
-}
-
-.project-details-btn:hover {
-    background-color: var(--arab-green);
-    color: var(--beige);
     box-shadow: 0 5px 15px rgba(0, 122, 61, 0.4);
 }
 
@@ -1184,6 +1143,11 @@ img {
         grid-template-columns: 1fr;
     }
     
+    .timeline-date {
+        position: static;
+        margin-bottom: 0.5rem;
+    }
+    
     .sumud-video-placeholder {
         height: 250px;
         padding: 1rem;
@@ -1278,6 +1242,11 @@ img {
     object-fit: cover;
 }
 
+/* Remove the weird work section effect */
+.work-censor {
+    display: none;
+}
+
 /* Portfolio Photo in About Section */
 .portfolio-photo {
     width: 100%;
@@ -1315,15 +1284,42 @@ img {
     pointer-events: none;
 }
 
+/* Ensure all image paths work */
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+/* Hero title font size adjustments */
+.main-title {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    display: block;
+    margin-bottom: 1.5rem;
+}
+
+.subtitle {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    display: block;
+    margin-bottom: 1.5rem;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+}
+
 /* Modal Styles */
-.project-modal {
+.project-modal,
+.image-modal,
+.video-modal {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.95);
-    display: none;
+    display: flex;
     justify-content: center;
     align-items: center;
     z-index: 2000;
@@ -1338,7 +1334,6 @@ img {
     max-height: 90vh;
     overflow-y: auto;
     position: relative;
-    width: 90%;
 }
 
 .image-modal-content,
@@ -1350,8 +1345,8 @@ img {
 
 .close-modal {
     position: absolute;
-    top: 1rem;
-    right: 1rem;
+    top: -40px;
+    right: 0;
     background: var(--arab-red);
     color: white;
     border: none;
@@ -1361,15 +1356,23 @@ img {
     cursor: pointer;
     font-size: 1.2rem;
     z-index: 2001;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .project-modal .close-modal {
     top: 1rem;
     right: 1rem;
     background: var(--arab-red);
+}
+
+/* Enhanced gallery item interactions */
+.gallery-item {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.gallery-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
 /* Project detail page styles */
@@ -1389,59 +1392,4 @@ img {
 
 .project-detail-content li {
     margin-bottom: 0.5rem;
-}
-
-/* Project Gallery in Modal */
-.project-gallery {
-    margin: 2rem 0;
-}
-
-.project-gallery img {
-    width: 100%;
-    margin: 1rem 0;
-    border-radius: 5px;
-    box-shadow: var(--shadow-md);
-    cursor: pointer;
-}
-
-/* Project Video in Modal */
-.project-video {
-    margin: 2rem 0;
-}
-
-.project-video video {
-    width: 100%;
-    border-radius: 5px;
-    box-shadow: var(--shadow-md);
-}
-
-/* Project Links in Modal */
-.project-links {
-    margin: 2rem 0;
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-}
-
-/* Back to Top Button */
-.back-to-top {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    background: var(--arab-red);
-    color: white;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 1000;
-    transition: var(--transition-normal);
-}
-
-.back-to-top:hover {
-    background: var(--arab-green);
-    transform: translateY(-3px);
 }

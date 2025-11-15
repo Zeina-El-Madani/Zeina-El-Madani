@@ -1,64 +1,51 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const cors = require('cors');
-const emailRoutes = require('./routes/email');
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 3001;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:5500'],
+    credentials: true
+}));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Serve static files from the public directory
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
-app.use('/api', emailRoutes);
+app.use('/api/contact', require('./routes/contact'));
 
-// Basic route
-app.get('/', (req, res) => {
-    res.json({ 
-        message: 'Portfolio Backend API is running!',
-        version: '1.0.0',
-        author: 'Zeina El Madani',
-        endpoints: {
-            contact: '/api/contact',
-            health: '/api/health'
-        }
-    });
-});
-
-// Health check endpoint
-app.get('/health', (req, res) => {
+// Health check route
+app.get('/api/health', (req, res) => {
     res.json({ 
         status: 'OK', 
+        message: 'Server is running',
         timestamp: new Date().toISOString(),
-        environment: process.env.NODE_ENV || 'development'
+        database: mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected'
     });
 });
 
-// 404 handler
-app.use('*', (req, res) => {
-    res.status(404).json({
-        error: 'Endpoint not found',
-        availableEndpoints: {
-            home: '/',
-            health: '/health',
-            contact: '/api/contact'
-        }
-    });
+// Serve the main HTML file for all other routes (SPA support)
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Error handling middleware
-app.use((error, req, res, next) => {
-    console.error('Server Error:', error);
-    res.status(500).json({
-        error: 'Internal server error',
-        message: process.env.NODE_ENV === 'development' ? error.message : 'Something went wrong'
-    });
-});
+// Database connection
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/zeina-portfolio';
 
-// Start server
+mongoose.connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
+.then(() => console.log('✅ MongoDB connected successfully'))
+.catch(err => console.log('⚠️ MongoDB not connected, but server will continue running'));
+
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
-    console.log(`🚀 Portfolio Backend Server running on port ${PORT}`);
-    console.log(`📧 Email configured: ${process.env.EMAIL_USER ? 'Yes' : 'No (using fallback)'}`);
-    console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`🚀 Server running on port ${PORT}`);
 });
