@@ -87,52 +87,28 @@ function initLightbox() {
         return;
     }
     
-    // Make entire gallery items clickable for images
-    document.querySelectorAll('.gallery-item').forEach(item => {
-        const img = item.querySelector('img');
-        const videoContainer = item.querySelector('.video-container');
-        
-        if (img) {
-            // Make the entire gallery item clickable for images
-            item.style.cursor = 'pointer';
-            item.addEventListener('click', function(e) {
+    // Make all gallery images clickable
+    document.querySelectorAll('.gallery-item img').forEach(img => {
+        img.style.cursor = 'pointer';
+        img.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Image clicked:', this.src);
+            showImageLightbox(this.src, this.alt);
+        });
+    });
+    
+    // Make gallery videos clickable
+    document.querySelectorAll('.gallery-item .video-container').forEach(container => {
+        const iframe = container.querySelector('iframe');
+        if (iframe) {
+            container.style.cursor = 'pointer';
+            container.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                console.log('Gallery item clicked - image:', img.src);
-                showImageLightbox(img.src, img.alt || 'Gallery Image');
+                console.log('Video clicked:', iframe.src);
+                showVideoLightbox(iframe.src);
             });
-            
-            // Also make the image itself clickable as backup
-            img.style.cursor = 'pointer';
-            img.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                console.log('Image clicked directly:', this.src);
-                showImageLightbox(this.src, this.alt || 'Gallery Image');
-            });
-        }
-        
-        if (videoContainer) {
-            const iframe = videoContainer.querySelector('iframe');
-            if (iframe) {
-                // Make the entire gallery item clickable for videos
-                item.style.cursor = 'pointer';
-                item.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    console.log('Gallery item clicked - video:', iframe.src);
-                    showVideoLightbox(iframe.src);
-                });
-                
-                // Also make the video container clickable as backup
-                videoContainer.style.cursor = 'pointer';
-                videoContainer.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    console.log('Video container clicked:', iframe.src);
-                    showVideoLightbox(iframe.src);
-                });
-            }
         }
     });
     
@@ -156,7 +132,6 @@ function initLightbox() {
     });
     
     function showImageLightbox(src, alt) {
-        console.log('Opening image lightbox:', src);
         lightbox.style.display = 'flex';
         document.body.style.overflow = 'hidden'; // Prevent scrolling
         
@@ -174,13 +149,13 @@ function initLightbox() {
     }
     
     function showVideoLightbox(src) {
-        console.log('Opening video lightbox:', src);
         lightbox.style.display = 'flex';
         document.body.style.overflow = 'hidden'; // Prevent scrolling
         
         if (lightboxVideo) {
             lightboxVideo.src = src;
             lightboxVideo.style.display = 'block';
+            // Note: Autoplay might be blocked by browser policies
         }
         
         if (lightboxImg) {
@@ -189,7 +164,6 @@ function initLightbox() {
     }
     
     function closeLightboxModal() {
-        console.log('Closing lightbox');
         lightbox.style.display = 'none';
         document.body.style.overflow = ''; // Re-enable scrolling
         
