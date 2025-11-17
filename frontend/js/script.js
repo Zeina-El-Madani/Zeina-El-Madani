@@ -75,6 +75,105 @@ const projects = {
     }
 };
 
+// Lightbox functionality
+function initLightbox() {
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-image');
+    const lightboxVideo = document.getElementById('lightbox-video');
+    const closeLightbox = document.querySelector('.close-lightbox');
+    
+    if (!lightbox) {
+        console.error('Lightbox element not found');
+        return;
+    }
+    
+    // Make all gallery images clickable
+    document.querySelectorAll('.gallery-item img').forEach(img => {
+        img.style.cursor = 'pointer';
+        img.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Image clicked:', this.src);
+            showImageLightbox(this.src, this.alt);
+        });
+    });
+    
+    // Make gallery videos clickable
+    document.querySelectorAll('.gallery-item .video-container').forEach(container => {
+        const iframe = container.querySelector('iframe');
+        if (iframe) {
+            container.style.cursor = 'pointer';
+            container.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Video clicked:', iframe.src);
+                showVideoLightbox(iframe.src);
+            });
+        }
+    });
+    
+    // Close lightbox
+    if (closeLightbox) {
+        closeLightbox.addEventListener('click', closeLightboxModal);
+    }
+    
+    // Close when clicking outside content
+    lightbox.addEventListener('click', function(e) {
+        if (e.target === lightbox) {
+            closeLightboxModal();
+        }
+    });
+    
+    // Close with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && lightbox.style.display === 'flex') {
+            closeLightboxModal();
+        }
+    });
+    
+    function showImageLightbox(src, alt) {
+        lightbox.style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // Prevent scrolling
+        
+        if (lightboxImg) {
+            lightboxImg.src = src;
+            lightboxImg.alt = alt;
+            lightboxImg.style.display = 'block';
+        }
+        
+        if (lightboxVideo) {
+            lightboxVideo.style.display = 'none';
+            lightboxVideo.pause();
+            lightboxVideo.currentTime = 0;
+        }
+    }
+    
+    function showVideoLightbox(src) {
+        lightbox.style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // Prevent scrolling
+        
+        if (lightboxVideo) {
+            lightboxVideo.src = src;
+            lightboxVideo.style.display = 'block';
+            // Note: Autoplay might be blocked by browser policies
+        }
+        
+        if (lightboxImg) {
+            lightboxImg.style.display = 'none';
+        }
+    }
+    
+    function closeLightboxModal() {
+        lightbox.style.display = 'none';
+        document.body.style.overflow = ''; // Re-enable scrolling
+        
+        if (lightboxVideo) {
+            lightboxVideo.pause();
+            lightboxVideo.currentTime = 0;
+        }
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // Loader animation
     const loader = document.querySelector('.loader');
@@ -95,6 +194,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 500);
         }, 1000);
     }, 1500);
+    
+    // Initialize lightbox first
+    initLightbox();
     
     // Typing effect for hero section - Updated words
     const typingText = document.querySelector('.typing-text');
@@ -183,83 +285,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
-    
-    // Enhanced Lightbox functionality for gallery images
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImg = document.getElementById('lightbox-image');
-    const lightboxVideo = document.getElementById('lightbox-video');
-    const closeLightbox = document.querySelector('.close-lightbox');
-    
-    // Make all gallery images clickable and expandable
-    document.querySelectorAll('.gallery-item img').forEach(img => {
-        img.style.cursor = 'pointer';
-        img.addEventListener('click', function(e) {
-            e.stopPropagation();
-            showImageLightbox(this.src, this.alt);
-        });
-    });
-    
-    // Make gallery videos clickable
-    document.querySelectorAll('.gallery-item .video-container iframe').forEach(iframe => {
-        iframe.style.cursor = 'pointer';
-        iframe.addEventListener('click', function(e) {
-            e.stopPropagation();
-            showVideoLightbox(this.src);
-        });
-    });
-    
-    // Close lightbox
-    if (closeLightbox) {
-        closeLightbox.addEventListener('click', function() {
-            closeLightboxModal();
-        });
-    }
-    
-    // Close when clicking outside content
-    if (lightbox) {
-        lightbox.addEventListener('click', function(e) {
-            if (e.target === lightbox) {
-                closeLightboxModal();
-            }
-        });
-        
-        // Close with Escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && lightbox.style.display === 'flex') {
-                closeLightboxModal();
-            }
-        });
-    }
-    
-    function showImageLightbox(src, alt) {
-        if (lightbox && lightboxImg) {
-            lightbox.style.display = 'flex';
-            lightboxImg.src = src;
-            lightboxImg.alt = alt;
-            lightboxImg.style.display = 'block';
-            if (lightboxVideo) lightboxVideo.style.display = 'none';
-        }
-    }
-    
-    function showVideoLightbox(src) {
-        if (lightbox && lightboxVideo) {
-            lightbox.style.display = 'flex';
-            lightboxVideo.src = src;
-            lightboxVideo.style.display = 'block';
-            if (lightboxImg) lightboxImg.style.display = 'none';
-            lightboxVideo.play();
-        }
-    }
-    
-    function closeLightboxModal() {
-        if (lightbox) {
-            lightbox.style.display = 'none';
-            if (lightboxVideo) {
-                lightboxVideo.pause();
-                lightboxVideo.currentTime = 0;
-            }
-        }
-    }
     
     // Update copyright year
     const yearElement = document.querySelector('.year');
