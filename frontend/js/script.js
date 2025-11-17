@@ -352,9 +352,6 @@ function createProjectDetailPages() {
             images: [],
             link: 'https://embed.figma.com/proto/HFLnf9BFMisFcZJ9EheHH9/EZPark-Website--Copy-?node-id=5-4&starting-point-node-id=5%3A4&embed-host=share'
         }
-
-       ,
-       
     };
 
     // Create project detail page handlers
