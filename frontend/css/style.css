@@ -450,6 +450,20 @@ img {
     transform: scale(1.05);
 }
 
+/* Video container styles */
+.video-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.video-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 5px;
+}
+
 /* Enhanced Gallery Item Caption Styles */
 .gallery-item-caption {
     position: absolute;
@@ -631,6 +645,9 @@ img {
     border-radius: 5px;
     font-weight: 700;
     transition: var(--transition-normal);
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
 }
 
 .project-link:hover {
@@ -679,36 +696,6 @@ img {
     border-radius: 10px;
     overflow: hidden;
     box-shadow: var(--shadow-lg);
-}
-
-.sumud-video-placeholder {
-    background: linear-gradient(45deg, var(--arab-green) 0%, var(--arab-red) 100%);
-    height: 450px;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: var(--beige);
-    text-align: center;
-    padding: 2rem;
-    cursor: pointer;
-    transition: var(--transition-normal);
-}
-
-.sumud-video-placeholder:hover {
-    transform: translateY(-5px);
-}
-
-.sumud-video-icon {
-    font-size: 4rem;
-    margin-bottom: 1rem;
-}
-
-.sumud-video-details {
-    font-size: 0.9rem;
-    opacity: 0.8;
-    margin-top: 0.5rem;
 }
 
 .sumud-details {
@@ -1121,7 +1108,7 @@ img {
         font-size: 1.2rem;
     }
     
-    .sumud-video-placeholder {
+    .sumud-video-container iframe {
         height: 350px;
     }
     
@@ -1148,13 +1135,8 @@ img {
         margin-bottom: 0.5rem;
     }
     
-    .sumud-video-placeholder {
+    .sumud-video-container iframe {
         height: 250px;
-        padding: 1rem;
-    }
-    
-    .sumud-video-icon {
-        font-size: 3rem;
     }
     
     .project-meta {

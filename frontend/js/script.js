@@ -1,6 +1,80 @@
 // Contact form API URL - Update this to your backend URL
 const API_BASE = 'http://localhost:3001/api';
 
+// Project data for detail modals
+const projects = {
+    'silenced-voices': {
+        title: 'Silenced Voices: Censorship & Resilience',
+        description: 'An interactive game exploring the hardships journalists face during wartime and how censorship affects their work.',
+        fullDescription: `
+            <p>This project is a powerful exploration of censorship and resilience in Palestine during the ongoing genocide. The game is designed to make you feel frustrated as each choice is either putting you, as a journalist in the game, at risk of being killed or facing you with obstacles that can't be solved. So every choice leads to a dead end. I aimed to highlight the challenges faced by journalists and activists in Palestine.</p>
+            
+            <h4>Key Features:</h4>
+            <ul>
+                <li>Interactive storytelling experience</li>
+                <li>Silent film metaphor for censorship</li>
+                <li>Cultural preservation through digital media</li>
+                <li>Social justice advocacy</li>
+            </ul>
+
+            <h4>Impact:</h4>
+            <p>The project has sparked important conversations about freedom of speech and censorship.</p>
+        `,
+        link: 'https://zeinamadani.itch.io/silenced-voices'
+    },
+    'ezpark': {
+        title: 'EZPark Website Design',
+        description: 'UX/UI design for a campus parking app solution.',
+        fullDescription: `
+            <p>EZPark is an app idea aiming to inform users regarding different open parking spots on campus which can allow students to decrease time looking for open spots on campus and also help to reduce traffic congestion.</p>
+            
+            <h4>My Role:</h4>
+            <p>My contribution to the project was the Website design, focusing on user experience and accessibility. I created wireframes, mockups, and interactive prototypes using Figma.</p>
+            
+            <h4>Design Process:</h4>
+            <ul>
+                <li>User research and needs analysis</li>
+                <li>Wireframing and prototyping</li>
+                <li>UI design and visual identity</li>
+                <li>Accessibility testing</li>
+            </ul>
+        `,
+        link: 'https://embed.figma.com/proto/HFLnf9BFMisFcZJ9EheHH9/EZPark-Website--Copy-?node-id=5-4&starting-point-node-id=5%3A4&embed-host=share'
+    },
+    'subject-seasons': {
+        title: 'Subject vs Seasons: A Photography Exploration',
+        description: 'A photographic exploration of how individuals react to and interact with different seasonal environments.',
+        fullDescription: `
+            <p>This project explores how the subject reacts to light and seasons changing in Rochester. So far two seasons have been captured: Spring and Summer. It is still an ongoing project and when Fall and Winter photos will be taken, the project would be completed.</p>
+            
+            <h4>Project Overview:</h4>
+            <p>In the spring the photos were taken next to flowers and green grass. For the summer, the photos were taken at Lake Ontario Beach. I realized that people's mood changes according to the weather. The person in the photoshoot mentioned that she adjusts her outfits based on her mood, which inspired this exploration of how individuals interact with seasonal environments.</p>
+            
+            <h4>My Role and Duration:</h4>
+            <p>I was the photographer, and the project was taken in the spring of 2024 and the summer of 2024. I would ask the subject to pose however they want and then adjust her accordingly. I also edited the photos post photoshoot to adjust them and color correct them using Adobe Photoshop.</p>
+            
+            <h4>Creative Concept:</h4>
+            <p>The goal was to portray her feelings and emotions that she feels during each season. To show how her mood changes accordingly and how she expresses herself. I wanted to show that seasons have an effect on how people feel and their mental health and how different people react to the seasons changing.</p>
+            
+            <h4>Design Process:</h4>
+            <p>I used a lumix p10 camera to take the photos. A lot of the process is going with the flow of the subject and seeing what area they would choose and what they would do and how they would pose. I barely directed her on what to do but I would adjust occasionally to fix the photo structure. Then I decided to edit the photos to highlight certain aspects of its composition.</p>
+            
+            <h4>Results:</h4>
+            <p>In the spring photos, she appears to be breathing in fresh air and feeling the grass, while in the summer photos she is sunbathing and playing with the sand and rocks. The contrast between seasons shows how environmental context influences emotional expression and personal interaction with nature.</p>
+            
+            <h4>Future Development:</h4>
+            <p>This project may expand to involve different people to compare how various individuals react to seasonal changes, creating a broader study of human-environment interaction.</p>
+        `,
+        images: [
+            'frontend/assets/images/Photography/mesmerization/Pau1.jpg',
+            'frontend/assets/images/Photography/mesmerization/pau2.jpg',
+            'frontend/assets/images/Photography/mesmerization/pau3.jpg',
+            'frontend/assets/images/Photography/mesmerization/pau4.jpg',
+            'frontend/assets/images/Photography/mesmerization/pau5.jpg'
+        ]
+    }
+};
+
 document.addEventListener('DOMContentLoaded', function() {
     // Loader animation
     const loader = document.querySelector('.loader');
@@ -124,46 +198,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 lightboxImg.src = this.src;
                 lightboxImg.style.display = 'block';
                 lightboxVideo.style.display = 'none';
-                
-                // Display caption in lightbox if available
-                const caption = this.parentElement.querySelector('.gallery-item-caption');
-                if (caption) {
-                    console.log('Image caption:', caption.innerHTML);
-                }
-            });
-        });
-        
-        // Open lightbox for videos
-        document.querySelectorAll('.gallery-item video').forEach(video => {
-            video.addEventListener('click', function() {
-                lightbox.style.display = 'flex';
-                const source = this.querySelector('source');
-                if (source) {
-                    lightboxVideo.src = source.src;
-                }
-                lightboxVideo.style.display = 'block';
-                lightboxImg.style.display = 'none';
-                lightboxVideo.play();
-                
-                // Display caption in lightbox if available
-                const caption = this.parentElement.querySelector('.gallery-item-caption');
-                if (caption) {
-                    console.log('Video caption:', caption.innerHTML);
-                }
             });
         });
         
         // Close lightbox
         closeLightbox.addEventListener('click', function() {
             lightbox.style.display = 'none';
-            lightboxVideo.pause();
+            if (lightboxVideo) lightboxVideo.pause();
         });
         
         // Close when clicking outside content
         lightbox.addEventListener('click', function(e) {
             if (e.target === lightbox) {
                 lightbox.style.display = 'none';
-                lightboxVideo.pause();
+                if (lightboxVideo) lightboxVideo.pause();
             }
         });
     }
@@ -316,70 +364,22 @@ document.addEventListener('DOMContentLoaded', function() {
             this.style.transform = 'translateY(0)';
         });
     });
+    
+    // Initialize project functionality
+    initializeProjectButtons();
 });
 
-// Add this to your existing script.js file
-
-// Project detail pages functionality
-function createProjectDetailPages() {
-    // Project data - you can expand this with more projects
-    const projects = {
-        'silenced-voices': {
-            title: 'Silenced Voices: Censorship & Resilience',
-            description: 'An interactive game exploring the hardships journalists face during wartime and how censorship affects their work.',
-            fullDescription: `
-                <p>This project is a powerful exploration of censorship and resilience in Palestine during the ongoing genocide. The game is designed to make you feel frustrated as each choice is either putting you, as a journalist in the game, at risk of being killed or facing you with obstacles that can't be solved. So every choice leads to a dead end. I aimed to highlight the challenges faced by journalists and activists in Palestine.</p>
-                
-                <h4>Key Features:</h4>
-                <ul>
-                    <li>Interactive storytelling experience</li>
-                    <li>Silent film metaphor for censorship</li>
-                    <li>Cultural preservation through digital media</li>
-                    <li>Social justice advocacy</li>
-                </ul>
-    
-                
-                <h4>Impact:</h4>
-                <p>The project has sparked important conversations about freedom of speech and censorship.</p>
-            `,
-            
-            link: 'https://zeinamadani.itch.io/silenced-voices'
-        },
-        'ezpark': {
-            title: 'EZPark Website Design',
-            description: 'UX/UI design for a campus parking app solution.',
-            fullDescription: 'Explore all the details of the project by clicking on the link and going through the demo',
-            images: [],
-            link: 'https://embed.figma.com/proto/HFLnf9BFMisFcZJ9EheHH9/EZPark-Website--Copy-?node-id=5-4&starting-point-node-id=5%3A4&embed-host=share'
-        }
-    };
-
-    // Create project detail page handlers
-    document.addEventListener('click', function(e) {
-        // Handle project card clicks
-        if (e.target.closest('.project-card') || e.target.closest('.project-link')) {
+// Initialize project explore buttons
+function initializeProjectButtons() {
+    // Add event listeners to all explore buttons
+    document.querySelectorAll('.explore-btn').forEach(button => {
+        button.addEventListener('click', function(e) {
             e.preventDefault();
-            const projectCard = e.target.closest('.project-card');
-            if (projectCard) {
-                const projectId = projectCard.id;
-                if (projects[projectId]) {
-                    showProjectDetail(projects[projectId]);
-                }
+            const projectId = this.getAttribute('data-project');
+            if (projects[projectId]) {
+                showProjectDetail(projects[projectId]);
             }
-        }
-
-        // Handle gallery item clicks for larger view
-        if (e.target.closest('.gallery-item')) {
-            const galleryItem = e.target.closest('.gallery-item');
-            const img = galleryItem.querySelector('img');
-            const video = galleryItem.querySelector('video');
-            
-            if (img) {
-                showImageDetail(img.src, galleryItem.querySelector('.gallery-item-caption')?.innerHTML);
-            } else if (video) {
-                showVideoDetail(video.querySelector('source')?.src, galleryItem.querySelector('.gallery-item-caption')?.innerHTML);
-            }
-        }
+        });
     });
 }
 
@@ -400,6 +400,21 @@ function showProjectDetail(project) {
         z-index: 2000;
         padding: 20px;
     `;
+
+    // Build images HTML if project has images
+    let imagesHTML = '';
+    if (project.images && project.images.length > 0) {
+        imagesHTML = `
+            <div class="project-gallery" style="margin: 2rem 0;">
+                <h4 style="color: var(--arab-green); margin-bottom: 1rem;">Project Images</h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    ${project.images.map(img => `
+                        <img src="${img}" style="width: 100%; height: 150px; object-fit: cover; border-radius: 5px; cursor: pointer;" onclick="showImageDetail('${img}', '${project.title}')">
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }
 
     modal.innerHTML = `
         <div class="project-modal-content" style="
@@ -430,19 +445,7 @@ function showProjectDetail(project) {
                 ${project.fullDescription || project.description}
             </div>
             
-            ${project.images.length > 0 ? `
-                <div class="project-gallery" style="margin: 2rem 0;">
-                    ${project.images.map(img => `<img src="${img}" style="width: 100%; margin: 1rem 0; border-radius: 5px;">`).join('')}
-                </div>
-            ` : ''}
-            
-            ${project.video ? `
-                <div class="project-video" style="margin: 2rem 0;">
-                    <video controls style="width: 100%; border-radius: 5px;">
-                        <source src="${project.video}" type="video/mp4">
-                    </video>
-                </div>
-            ` : ''}
+            ${imagesHTML}
             
             ${project.link ? `
                 <a href="${project.link}" target="_blank" class="project-link" style="
@@ -523,65 +526,3 @@ function showImageDetail(src, caption) {
         }
     });
 }
-
-// Enhanced video detail view
-function showVideoDetail(src, caption) {
-    const modal = document.createElement('div');
-    modal.className = 'video-modal';
-    modal.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.95);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 2000;
-        padding: 20px;
-    `;
-
-    modal.innerHTML = `
-        <div class="video-modal-content" style="max-width: 90vw; max-height: 90vh; position: relative;">
-            <button class="close-modal" style="
-                position: absolute;
-                top: -40px;
-                right: 0;
-                background: var(--arab-red);
-                color: white;
-                border: none;
-                width: 30px;
-                height: 30px;
-                border-radius: 50%;
-                cursor: pointer;
-                font-size: 1.2rem;
-                z-index: 2001;
-            ">×</button>
-            <video controls autoplay style="max-width: 100%; max-height: 80vh;">
-                <source src="${src}" type="video/mp4">
-            </video>
-            ${caption ? `<div style="color: white; text-align: center; margin-top: 1rem;">${caption}</div>` : ''}
-        </div>
-    `;
-
-    document.body.appendChild(modal);
-
-    modal.querySelector('.close-modal').addEventListener('click', () => {
-        document.body.removeChild(modal);
-    });
-
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            document.body.removeChild(modal);
-        }
-    });
-}
-
-// Initialize enhanced functionality when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    // Your existing DOMContentLoaded code here...
-    
-    // Add this line to initialize project functionality
-    createProjectDetailPages();
-});
