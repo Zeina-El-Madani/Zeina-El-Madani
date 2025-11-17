@@ -326,9 +326,9 @@ function createProjectDetailPages() {
     const projects = {
         'silenced-voices': {
             title: 'Silenced Voices: Censorship & Resilience',
-            description: 'An interactive experience and silent short film exploring the hardships journalists face during wartime and how censorship affects their work.',
+            description: 'An interactive game exploring the hardships journalists face during wartime and how censorship affects their work.',
             fullDescription: `
-                <p>This project is a powerful exploration of censorship and resilience in conflict zones. Through an interactive web experience and a silent short film, I aimed to highlight the challenges faced by journalists and activists in Palestine.</p>
+                <p>This project is a powerful exploration of censorship and resilience in Palestine during the ongoing genocide. The game is designed to make you feel frustrated as each choice is either putting you, as a journalist in the game, at risk of being killed or facing you with obstacles that can't be solved. So every choice leads to a dead end. I aimed to highlight the challenges faced by journalists and activists in Palestine.</p>
                 
                 <h4>Key Features:</h4>
                 <ul>
@@ -337,27 +337,24 @@ function createProjectDetailPages() {
                     <li>Cultural preservation through digital media</li>
                     <li>Social justice advocacy</li>
                 </ul>
-                
-                <h4>Technical Implementation:</h4>
-                <p>Built using HTML5, CSS3, and JavaScript for the interactive elements. The film was shot using professional equipment and edited with Adobe Premiere Pro.</p>
+    
                 
                 <h4>Impact:</h4>
-                <p>The project has been featured in university exhibitions and has sparked important conversations about freedom of speech and cultural preservation.</p>
+                <p>The project has sparked important conversations about freedom of speech and censorship.</p>
             `,
-            images: [
-                'assets/images/Photography/Silenced-voices-photos/elmadani_1.jpg',
-                'assets/images/Photography/Silenced-voices-photos/elmadani_2.jpg'
-            ],
-            video: 'assets/videos/Stains.mp4',
+            
             link: 'https://zeinamadani.itch.io/silenced-voices'
         },
         'ezpark': {
             title: 'EZPark Website Design',
             description: 'UX/UI design for a campus parking app solution.',
-            fullDescription: 'Detailed description of EZPark project...',
+            fullDescription: 'Explore all the details of the project by clicking on the link and going through the demo',
             images: [],
             link: 'https://embed.figma.com/proto/HFLnf9BFMisFcZJ9EheHH9/EZPark-Website--Copy-?node-id=5-4&starting-point-node-id=5%3A4&embed-host=share'
         }
+
+       ,
+       
     };
 
     // Create project detail page handlers
