@@ -10,6 +10,7 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+Venv/
 
 # OS generated files
 .DS_Store
