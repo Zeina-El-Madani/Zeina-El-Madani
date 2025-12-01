@@ -93,7 +93,7 @@ function initLightbox() {
     let images = [];
     
     // Make all gallery images clickable
-    document.querySelectorAll('.gallery-item img').forEach((img, index) => {
+    document.querySelectorAll('.gallery-item').forEach((img, index) => {
         img.style.cursor = 'pointer';
         img.addEventListener('click', function(e) {
             e.preventDefault();
