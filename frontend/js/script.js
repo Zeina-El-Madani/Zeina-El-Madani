@@ -75,14 +75,12 @@ const projects = {
     }
 };
 
-// Lightbox functionality
+// Simple Lightbox functionality
 function initLightbox() {
-    const lightbox = document.getElementById('photo-lightbox');
-    const lightboxImg = document.getElementById('lightbox-image');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
     const lightboxCaption = document.getElementById('lightbox-caption');
     const closeLightbox = document.querySelector('.close-lightbox');
-    const prevButton = document.querySelector('.lightbox-prev');
-    const nextButton = document.querySelector('.lightbox-next');
     
     if (!lightbox) {
         console.error('Lightbox element not found');
@@ -94,43 +92,27 @@ function initLightbox() {
     
     // Function to show image in lightbox
     function showImageLightbox(src, caption) {
-        lightbox.classList.add('active');
-        document.body.style.overflow = 'hidden'; // Prevent scrolling
-        
         if (lightboxImg) {
             lightboxImg.src = src;
-            lightboxImg.alt = caption;
-            
-            if (lightboxCaption) {
-                lightboxCaption.textContent = caption || '';
-            }
+            lightboxImg.alt = caption || '';
         }
+        
+        if (lightboxCaption) {
+            lightboxCaption.textContent = caption || '';
+        }
+        
+        lightbox.style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // Prevent scrolling
     }
     
-    // Function to show video in lightbox
+    // Function to show video in lightbox (for videos)
     function showVideoLightbox(src) {
-        // For now, we'll just open the video in a new tab
+        // For videos, we'll just open in a new tab for now
         window.open(src, '_blank');
     }
     
-    function showPrevImage() {
-        if (images.length === 0) return;
-        
-        currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
-        const prevImage = images[currentImageIndex];
-        showImageLightbox(prevImage.src, prevImage.getAttribute('data-caption') || prevImage.alt);
-    }
-    
-    function showNextImage() {
-        if (images.length === 0) return;
-        
-        currentImageIndex = (currentImageIndex + 1) % images.length;
-        const nextImage = images[currentImageIndex];
-        showImageLightbox(nextImage.src, nextImage.getAttribute('data-caption') || nextImage.alt);
-    }
-    
     function closeLightboxModal() {
-        lightbox.classList.remove('active');
+        lightbox.style.display = 'none';
         document.body.style.overflow = ''; // Re-enable scrolling
         images = [];
         currentImageIndex = 0;
@@ -147,8 +129,34 @@ function initLightbox() {
             images = Array.from(document.querySelectorAll('.gallery-item img'));
             currentImageIndex = images.indexOf(this);
             
-            showImageLightbox(this.src, this.getAttribute('data-caption') || this.alt);
+            const caption = this.getAttribute('data-caption') || this.alt;
+            showImageLightbox(this.src, caption);
         });
+    });
+    
+    // Make entire gallery items clickable (not just the images)
+    document.querySelectorAll('.gallery-item').forEach((item, index) => {
+        const img = item.querySelector('img');
+        if (img) {
+            item.style.cursor = 'pointer';
+            item.addEventListener('click', function(e) {
+                // Only trigger if clicked directly on the item, not on an image
+                if (e.target === this || e.target.classList.contains('gallery-item-caption')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const img = this.querySelector('img');
+                    if (img) {
+                        // Get all images in the gallery
+                        images = Array.from(document.querySelectorAll('.gallery-item img'));
+                        currentImageIndex = images.indexOf(img);
+                        
+                        const caption = img.getAttribute('data-caption') || img.alt;
+                        showImageLightbox(img.src, caption);
+                    }
+                }
+            });
+        }
     });
     
     // Make gallery videos clickable
@@ -170,16 +178,7 @@ function initLightbox() {
         closeLightbox.addEventListener('click', closeLightboxModal);
     }
     
-    // Navigation buttons
-    if (prevButton) {
-        prevButton.addEventListener('click', showPrevImage);
-    }
-    
-    if (nextButton) {
-        nextButton.addEventListener('click', showNextImage);
-    }
-    
-    // Close when clicking outside content
+    // Close when clicking outside the image
     lightbox.addEventListener('click', function(e) {
         if (e.target === lightbox) {
             closeLightboxModal();
@@ -188,14 +187,8 @@ function initLightbox() {
     
     // Close with Escape key
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+        if (e.key === 'Escape' && lightbox.style.display === 'flex') {
             closeLightboxModal();
-        }
-        if (e.key === 'ArrowLeft' && lightbox.classList.contains('active')) {
-            showPrevImage();
-        }
-        if (e.key === 'ArrowRight' && lightbox.classList.contains('active')) {
-            showNextImage();
         }
     });
 }
