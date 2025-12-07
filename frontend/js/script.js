@@ -77,6 +77,8 @@ const projects = {
 
 // Simple Lightbox functionality
 function initLightbox() {
+    console.log('Initializing lightbox...');
+    
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
     const lightboxCaption = document.getElementById('lightbox-caption');
@@ -87,15 +89,23 @@ function initLightbox() {
         return;
     }
     
+    if (!lightboxImg) {
+        console.error('Lightbox image element not found');
+        return;
+    }
+    
+    console.log('Lightbox found:', lightbox);
+    console.log('Lightbox image found:', lightboxImg);
+    
     let currentImageIndex = 0;
     let images = [];
     
     // Function to show image in lightbox
     function showImageLightbox(src, caption) {
-        if (lightboxImg) {
-            lightboxImg.src = src;
-            lightboxImg.alt = caption || '';
-        }
+        console.log('Showing image in lightbox:', src, caption);
+        
+        lightboxImg.src = src;
+        lightboxImg.alt = caption || '';
         
         if (lightboxCaption) {
             lightboxCaption.textContent = caption || '';
@@ -103,45 +113,57 @@ function initLightbox() {
         
         lightbox.style.display = 'flex';
         document.body.style.overflow = 'hidden'; // Prevent scrolling
-    }
-    
-    // Function to show video in lightbox (for videos)
-    function showVideoLightbox(src) {
-        // For videos, we'll just open in a new tab for now
-        window.open(src, '_blank');
+        
+        // Add active class for CSS transitions
+        lightbox.classList.add('active');
     }
     
     function closeLightboxModal() {
+        console.log('Closing lightbox');
         lightbox.style.display = 'none';
+        lightbox.classList.remove('active');
         document.body.style.overflow = ''; // Re-enable scrolling
         images = [];
         currentImageIndex = 0;
     }
     
-    // Make all gallery images clickable
-    document.querySelectorAll('.gallery-item img').forEach((img, index) => {
-        img.style.cursor = 'pointer';
-        img.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            // Get all images in the gallery
-            images = Array.from(document.querySelectorAll('.gallery-item img'));
-            currentImageIndex = images.indexOf(this);
-            
-            const caption = this.getAttribute('data-caption') || this.alt;
-            showImageLightbox(this.src, caption);
-        });
-    });
+    // Debug: Check how many gallery items we have
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    console.log('Found gallery items:', galleryItems.length);
     
-    // Make entire gallery items clickable (not just the images)
-    document.querySelectorAll('.gallery-item').forEach((item, index) => {
+    // Make all gallery items clickable - SIMPLE VERSION
+    galleryItems.forEach((item, index) => {
+        console.log('Setting up gallery item', index, item);
+        
+        // Find the image inside this gallery item
         const img = item.querySelector('img');
+        
         if (img) {
+            console.log('Found image in gallery item', index, img.src);
+            
+            // Make both the image and the gallery item clickable
+            img.style.cursor = 'pointer';
             item.style.cursor = 'pointer';
+            
+            // Add click event to the image
+            img.addEventListener('click', function(e) {
+                console.log('Image clicked:', this.src);
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Get all images in the gallery
+                images = Array.from(document.querySelectorAll('.gallery-item img'));
+                currentImageIndex = images.indexOf(this);
+                
+                const caption = this.getAttribute('data-caption') || this.alt;
+                showImageLightbox(this.src, caption);
+            });
+            
+            // Add click event to the entire gallery item
             item.addEventListener('click', function(e) {
-                // Only trigger if clicked directly on the item, not on an image
+                // Only trigger if clicked on the item itself (not on the image which has its own handler)
                 if (e.target === this || e.target.classList.contains('gallery-item-caption')) {
+                    console.log('Gallery item clicked');
                     e.preventDefault();
                     e.stopPropagation();
                     
@@ -156,8 +178,14 @@ function initLightbox() {
                     }
                 }
             });
+        } else {
+            console.log('No image found in gallery item', index);
         }
     });
+    
+    // Debug: Check how many direct images we have
+    const directImages = document.querySelectorAll('.gallery-item img');
+    console.log('Found direct images in gallery items:', directImages.length);
     
     // Make gallery videos clickable
     document.querySelectorAll('.gallery-item .video-container').forEach(container => {
@@ -168,7 +196,8 @@ function initLightbox() {
                 e.preventDefault();
                 e.stopPropagation();
                 console.log('Video clicked:', iframe.src);
-                showVideoLightbox(iframe.src);
+                // For videos, we'll just open in a new tab for now
+                window.open(iframe.src, '_blank');
             });
         }
     });
@@ -353,6 +382,8 @@ function showImageDetail(src, caption) {
 
 // Main DOMContentLoaded event listener
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM fully loaded');
+    
     // Loader animation
     const loader = document.querySelector('.loader');
     const censoredText = document.querySelector('.censored-text');
@@ -375,7 +406,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 1500);
     }
     
-    // Initialize lightbox first
+    // Initialize lightbox FIRST
+    console.log('Initializing lightbox...');
     initLightbox();
     
     // Typing effect for hero section - Updated words
@@ -621,4 +653,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize project functionality
     initializeProjectButtons();
+    
+    // Test: Add a simple click handler to verify
+    console.log('Adding test click handler...');
+    document.querySelectorAll('.gallery-item img').forEach(img => {
+        img.addEventListener('click', function() {
+            console.log('TEST: Image clicked:', this.src);
+        });
+    });
 });
