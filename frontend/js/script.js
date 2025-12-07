@@ -7,18 +7,18 @@ const projects = {
         title: 'Silenced Voices: Censorship & Resilience',
         description: 'An interactive game exploring the hardships journalists face during wartime and how censorship affects their work.',
         fullDescription: `
-            <p>This project is a powerful exploration of censorship and resilience in Palestine during the ongoing genocide. The game is designed to make you feel frustrated as each choice is either putting you, as a journalist in the game, at risk of being killed or facing you with obstacles that can't be solved. So every choice leads to a dead end. I aimed to highlight the challenges faced by journalists and activists in Palestine.</p>
+            <p>This project is a powerful exploration of censorship and resilience in Palestine during the ongoing genocide. The game is designed to create feelings of frustration, as every choice you make as a journalist in this world either puts you at risk of death or presents you with unsolvable obstacles. Consequently, each decision leads to a dead end. My aim was to highlight the censorship and oppression of journalists and activists in Palestine. </p>
             
             <h4>Key Features:</h4>
             <ul>
                 <li>Interactive storytelling experience</li>
-                <li>Silent film metaphor for censorship</li>
-                <li>Cultural preservation through digital media</li>
                 <li>Social justice advocacy</li>
+                <li> educational insights into wartime journalism</li>
+                <li>Immersive gameplay mechanics</li>
             </ul>
 
             <h4>Impact:</h4>
-            <p>The project has sparked important conversations about freedom of speech and censorship.</p>
+            <p>The project has sparked important conversations about freedom of speech and realities of censorship.</p>
         `,
         link: 'https://zeinamadani.itch.io/silenced-voices'
     },
@@ -26,8 +26,7 @@ const projects = {
         title: 'EZPark Website Design',
         description: 'UX/UI design for a campus parking app solution.',
         fullDescription: `
-            <p>EZPark is an app idea aiming to inform users regarding different open parking spots on campus which can allow students to decrease time looking for open spots on campus and also help to reduce traffic congestion.</p>
-            
+            <p>EZPark is an app designed to show users open parking spots on campus. This helps students save time searching for parking and reduces traffic congestion. </p>            
             <h4>My Role:</h4>
             <p>My contribution to the project was the Website design, focusing on user experience and accessibility. I created wireframes, mockups, and interactive prototypes using Figma.</p>
             
@@ -35,7 +34,7 @@ const projects = {
             <ul>
                 <li>User research and needs analysis</li>
                 <li>Wireframing and prototyping</li>
-                <li>UI design and visual identity</li>
+                <li>UI design and visuals </li>
                 <li>Accessibility testing</li>
             </ul>
         `,
@@ -45,30 +44,27 @@ const projects = {
         title: 'Subject vs Seasons: A Photography Exploration',
         description: 'A photographic exploration of how individuals react to and interact with different seasonal environments.',
         fullDescription: `
-            <p>This project explores how the subject reacts to light and seasons changing in Rochester. So far two seasons have been captured: Spring and Summer. It is still an ongoing project and when Fall and Winter photos will be taken, the project would be completed.</p>
-            
+           
             <h4>Project Overview:</h4>
-            <p>In the spring the photos were taken next to flowers and green grass. For the summer, the photos were taken at Lake Ontario Beach. I realized that people's mood changes according to the weather. The person in the photoshoot mentioned that she adjusts her outfits based on her mood, which inspired this exploration of how individuals interact with seasonal environments.</p>
-            
+            <p>This project explores how the subject reacts to changing light and seasons in Rochester. To date, two seasons have been captured: Spring and Summer. It is an ongoing project; the completion of the Fall and Winter series will finish the collection.</p>  
+
+            <p> For spring, photos were taken amidst flowers and green grass. For summer, the location shifted to Lake Ontario Beach. This exploration was inspired by the realization that people's moods change with the weather. The subject mentioned she adjusts her outfits based on her mood, which directly inspired this study of individual interaction with seasonal environments.</p> 
+
             <h4>My Role and Duration:</h4>
-            <p>I was the photographer, and the project was taken in the spring of 2024 and the summer of 2024. I would ask the subject to pose however they want and then adjust her accordingly. I also edited the photos post photoshoot to adjust them and color correct them using Adobe Photoshop.</p>
+            <p>As the photographer, I executed this project in Spring and Summer of 2024. My process involved first allowing the subject to pose naturally, then making minor adjustments for composition. All post-production editing and color correction were done by me using Adobe Photoshop.</p>            
             
             <h4>Creative Concept:</h4>
-            <p>The goal was to portray her feelings and emotions that she feels during each season. To show how her mood changes accordingly and how she expresses herself. I wanted to show that seasons have an effect on how people feel and their mental health and how different people react to the seasons changing.</p>
-            
+            <p>The goal was to visually portray the subject's feelings and emotional state during each season—to show how her mood changes and is expressed. I aimed to illustrate the tangible effect seasons have on personal well-being and mental state, and how individuals uniquely react to these environmental shifts.</p>
+
             <h4>Design Process:</h4>
-            <p>I used a lumix p10 camera to take the photos. A lot of the process is going with the flow of the subject and seeing what area they would choose and what they would do and how they would pose. I barely directed her on what to do but I would adjust occasionally to fix the photo structure. Then I decided to edit the photos to highlight certain aspects of its composition.</p>
-            
-            <h4>Results:</h4>
-            <p>In the spring photos, she appears to be breathing in fresh air and feeling the grass, while in the summer photos she is sunbathing and playing with the sand and rocks. The contrast between seasons shows how environmental context influences emotional expression and personal interaction with nature.</p>
+            <p>I shot the photos with a Lumix P10 camera. The process was largely organic, following the subject's lead in choosing areas and poses. My direction was minimal, focused primarily on occasional compositional adjustments. The editing phase was used to highlight key compositional elements and enhance the narrative.</p>
             
             <h4>Future Development:</h4>
-            <p>This project may expand to involve different people to compare how various individuals react to seasonal changes, creating a broader study of human-environment interaction.</p>
-        `,
+            <p>This project may expand to include different subjects, comparing varied individual reactions to seasonal changes. This would broaden the study into a more comprehensive exploration of human-environment interaction.</p>        `,
         images: [
-            'frontend/assets/images/Photography/mesmerization/Pau1.jpg',
+            'frontend/assets/images/Photography/mesmerization/beach5.JPG',
             'frontend/assets/images/Photography/mesmerization/pau2.jpg',
-            'frontend/assets/images/Photography/mesmerization/pau3.jpg',
+            'frontend/assets/images/Photography/mesmerization/beach7.JPG',
             'frontend/assets/images/Photography/mesmerization/pau4.jpg',
             'frontend/assets/images/Photography/mesmerization/pau5.jpg'
         ]
