@@ -76,406 +76,129 @@ const projects = {
 };
 
 // Lightbox functionality
-// function initLightbox() {
-//     const lightbox = document.getElementById('photo-lightbox');
-//     const lightboxImg = document.getElementById('lightbox-image');
-//     const lightboxCaption = document.getElementById('lightbox-caption');
-//     const closeLightbox = document.querySelector('.close-lightbox');
-//     const prevButton = document.querySelector('.lightbox-prev');
-//     const nextButton = document.querySelector('.lightbox-next');
+function initLightbox() {
+    const lightbox = document.getElementById('photo-lightbox');
+    const lightboxImg = document.getElementById('lightbox-image');
+    const lightboxCaption = document.getElementById('lightbox-caption');
+    const closeLightbox = document.querySelector('.close-lightbox');
+    const prevButton = document.querySelector('.lightbox-prev');
+    const nextButton = document.querySelector('.lightbox-next');
     
-//     if (!lightbox) {
-//         console.error('Lightbox element not found');
-//         return;
-//     }
+    if (!lightbox) {
+        console.error('Lightbox element not found');
+        return;
+    }
     
-//     let currentImageIndex = 0;
-//     let images = [];
+    let currentImageIndex = 0;
+    let images = [];
     
-//     // Make all gallery images clickable
-//     document.querySelectorAll('.gallery-item').forEach((img, index) => {
-//         img.style.cursor = 'pointer';
-//         img.addEventListener('click', function(e) {
-//             e.preventDefault();
-//             e.stopPropagation();
+    // Function to show image in lightbox
+    function showImageLightbox(src, caption) {
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevent scrolling
+        
+        if (lightboxImg) {
+            lightboxImg.src = src;
+            lightboxImg.alt = caption;
             
-//             // Get all images in the gallery
-//             images = Array.from(document.querySelectorAll('.gallery-item img'));
-//             currentImageIndex = images.indexOf(this);
-            
-//             showImageLightbox(this.src, this.getAttribute('data-caption') || this.alt);
-//         });
-//     });
-    
-//     // Make gallery videos clickable
-//     document.querySelectorAll('.gallery-item .video-container').forEach(container => {
-//         const iframe = container.querySelector('iframe');
-//         if (iframe) {
-//             container.style.cursor = 'pointer';
-//             container.addEventListener('click', function(e) {
-//                 e.preventDefault();
-//                 e.stopPropagation();
-//                 console.log('Video clicked:', iframe.src);
-//                 showVideoLightbox(iframe.src);
-//             });
-//         }
-//     });
-    
-//     // Close lightbox
-//     if (closeLightbox) {
-//         closeLightbox.addEventListener('click', closeLightboxModal);
-//     }
-    
-//     // Navigation buttons
-//     if (prevButton) {
-//         prevButton.addEventListener('click', showPrevImage);
-//     }
-    
-//     if (nextButton) {
-//         nextButton.addEventListener('click', showNextImage);
-//     }
-    
-//     // Close when clicking outside content
-//     lightbox.addEventListener('click', function(e) {
-//         if (e.target === lightbox) {
-//             closeLightboxModal();
-//         }
-//     });
-    
-//     // Close with Escape key
-//     document.addEventListener('keydown', function(e) {
-//         if (e.key === 'Escape' && lightbox.classList.contains('active')) {
-//             closeLightboxModal();
-//         }
-//         if (e.key === 'ArrowLeft' && lightbox.classList.contains('active')) {
-//             showPrevImage();
-//         }
-//         if (e.key === 'ArrowRight' && lightbox.classList.contains('active')) {
-//             showNextImage();
-//         }
-//     });
-    
-//     function showImageLightbox(src, caption) {
-//         lightbox.classList.add('active');
-//         document.body.style.overflow = 'hidden'; // Prevent scrolling
-        
-//         if (lightboxImg) {
-//             lightboxImg.src = src;
-//             lightboxImg.alt = caption;
-//         }
-        
-//         if (lightboxCaption) {
-//             lightboxCaption.textContent = caption || '';
-//         }
-//     }
-    
-//     function showVideoLightbox(src) {
-//         // For now, we'll just open the video in a new tab
-//         window.open(src, '_blank');
-//     }
-    
-//     function showPrevImage() {
-//         if (images.length === 0) return;
-        
-//         currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
-//         const prevImage = images[currentImageIndex];
-//         showImageLightbox(prevImage.src, prevImage.getAttribute('data-caption') || prevImage.alt);
-//     }
-    
-//     function showNextImage() {
-//         if (images.length === 0) return;
-        
-//         currentImageIndex = (currentImageIndex + 1) % images.length;
-//         const nextImage = images[currentImageIndex];
-//         showImageLightbox(nextImage.src, nextImage.getAttribute('data-caption') || nextImage.alt);
-//     }
-    
-//     function closeLightboxModal() {
-//         lightbox.classList.remove('active');
-//         document.body.style.overflow = ''; // Re-enable scrolling
-//         images = [];
-//         currentImageIndex = 0;
-//     }
-// }
-
-document.querySelectorAll('.gallery-item').forEach(item => {
-    item.addEventListener('click', () => {
-        // Get image and title inside this gallery item
-        const img = item.querySelector('img');
-        const captionTitle = item.querySelector('.gallery-item-caption h3');
-
-        const imgSrc = img.getAttribute('src');
-        const title = captionTitle ? captionTitle.textContent : "";
-
-        // Call your function
-        showImageDetail(imgSrc, title);
-    });
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Loader animation
-    const loader = document.querySelector('.loader');
-    const censoredText = document.querySelector('.censored-text');
-    const nav = document.querySelector('.main-nav');
-    
-    // Simulate loading
-    setTimeout(() => {
-        censoredText.textContent = censoredText.getAttribute('data-text');
-        censoredText.style.color = '#e94560';
-        
-        setTimeout(() => {
-            loader.style.opacity = '0';
-            
-            setTimeout(() => {
-                loader.style.display = 'none';
-                nav.style.transform = 'translateY(0)';
-            }, 500);
-        }, 1000);
-    }, 1500);
-    
-    // Initialize lightbox first
-    initLightbox();
-    
-    // Typing effect for hero section - Updated words
-    const typingText = document.querySelector('.typing-text');
-    const words = ['Cultural Preservation', 'Social Justice', 'Documentary', 'Storytelling', 'Activism', 'Resilience', 'Change'];
-    let wordIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
-    let isEnd = false;
-    
-    function type() {
-        const currentWord = words[wordIndex];
-        const currentChar = currentWord.substring(0, charIndex);
-        typingText.textContent = currentChar;
-        
-        if (!isDeleting && charIndex < currentWord.length) {
-            charIndex++;
-            setTimeout(type, 100);
-        } else if (isDeleting && charIndex > 0) {
-            charIndex--;
-            setTimeout(type, 50);
-        } else {
-            isDeleting = !isDeleting;
-            if (!isDeleting) {
-                wordIndex = (wordIndex + 1) % words.length;
+            if (lightboxCaption) {
+                lightboxCaption.textContent = caption || '';
             }
-            setTimeout(type, 1000);
         }
     }
     
-    setTimeout(type, 2000);
-    
-    // Navigation toggle for mobile
-    const navToggle = document.querySelector('.nav-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    
-    if (navToggle) {
-        navToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-        });
+    // Function to show video in lightbox
+    function showVideoLightbox(src) {
+        // For now, we'll just open the video in a new tab
+        window.open(src, '_blank');
     }
     
-    // Smooth scrolling for navigation links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
+    function showPrevImage() {
+        if (images.length === 0) return;
+        
+        currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+        const prevImage = images[currentImageIndex];
+        showImageLightbox(prevImage.src, prevImage.getAttribute('data-caption') || prevImage.alt);
+    }
+    
+    function showNextImage() {
+        if (images.length === 0) return;
+        
+        currentImageIndex = (currentImageIndex + 1) % images.length;
+        const nextImage = images[currentImageIndex];
+        showImageLightbox(nextImage.src, nextImage.getAttribute('data-caption') || nextImage.alt);
+    }
+    
+    function closeLightboxModal() {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = ''; // Re-enable scrolling
+        images = [];
+        currentImageIndex = 0;
+    }
+    
+    // Make all gallery images clickable
+    document.querySelectorAll('.gallery-item img').forEach((img, index) => {
+        img.style.cursor = 'pointer';
+        img.addEventListener('click', function(e) {
             e.preventDefault();
+            e.stopPropagation();
             
-            const targetId = this.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
+            // Get all images in the gallery
+            images = Array.from(document.querySelectorAll('.gallery-item img'));
+            currentImageIndex = images.indexOf(this);
             
-            if (targetElement) {
-                window.scrollTo({
-                    top: targetElement.offsetTop - 100,
-                    behavior: 'smooth'
-                });
-                
-                // Close mobile menu if open
-                if (navLinks) {
-                    navLinks.classList.remove('active');
-                }
-            }
+            showImageLightbox(this.src, this.getAttribute('data-caption') || this.alt);
         });
     });
     
-    // Work gallery filter
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    const galleryItems = document.querySelectorAll('.gallery-item');
-    
-    filterButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            // Remove active class from all buttons
-            filterButtons.forEach(btn => btn.classList.remove('active'));
-            
-            // Add active class to clicked button
-            button.classList.add('active');
-            
-            const filterValue = button.getAttribute('data-filter');
-            
-            // Filter gallery items
-            galleryItems.forEach(item => {
-                const categories = item.getAttribute('data-category').split(' ');
-                if (filterValue === 'all' || categories.includes(filterValue)) {
-                    item.style.display = 'block';
-                } else {
-                    item.style.display = 'none';
-                }
+    // Make gallery videos clickable
+    document.querySelectorAll('.gallery-item .video-container').forEach(container => {
+        const iframe = container.querySelector('iframe');
+        if (iframe) {
+            container.style.cursor = 'pointer';
+            container.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Video clicked:', iframe.src);
+                showVideoLightbox(iframe.src);
             });
-        });
+        }
     });
     
-    // Update copyright year
-    const yearElement = document.querySelector('.year');
-    if (yearElement) {
-        yearElement.textContent = new Date().getFullYear();
+    // Close lightbox
+    if (closeLightbox) {
+        closeLightbox.addEventListener('click', closeLightboxModal);
     }
     
-    // Populate skills cloud - Updated skills
-    const skillsCloud = document.querySelector('.skills-cloud');
-    const skills = [
-        'Documentary Filmmaking', 'Cultural Preservation', 'Social Justice', 'Storytelling',
-        'Photography', 'Videography', 'Color Grading', 'Sound Design', 
-        'Framing & Composition', 'Lighting Design', 'Video Editing', 'Sequencing',
-        'Narrative Development', 'Adobe Creative Suite', 'Digital Marketing',
-        'Arabic Language', 'Cross-Cultural Communication', 'Activism'
-    ];
-    
-    if (skillsCloud) {
-        skills.forEach(skill => {
-            const skillTag = document.createElement('span');
-            skillTag.classList.add('skill-tag');
-            skillTag.textContent = skill;
-            skillsCloud.appendChild(skillTag);
-        });
+    // Navigation buttons
+    if (prevButton) {
+        prevButton.addEventListener('click', showPrevImage);
     }
     
-    // Populate experience accordion - Updated experiences
-    const experienceAccordion = document.querySelector('.experience-accordion');
-    const experiences = [
-        {
-            title: 'Marketing Intern',
-            location: 'Genesee Valley Council for the Arts, Rochester, New York',
-            description: 'Creating design posters and shooting short reel videos to promote events throughout the year. Developing social media marketing strategies and visual content for cultural events and art exhibitions.'
-        },
-        {
-            title: 'Publicity Chair',
-            location: 'University of Rochester Film Club',
-            description: 'Marketing club events and participating in student film shoots as Gaffer, Art Team, Production Assistant, Boom Operator, and Grip. Organized promotional campaigns and managed social media presence for film screenings and events.'
-        },
-        {
-            title: 'Lighting Designer',
-            location: 'School Theater Productions',
-            description: 'Operated lighting board for school plays and developed understanding of color theory that now informs color grading decisions in film projects. Collaborated with directors to create atmospheric lighting that enhanced narrative storytelling.'
+    if (nextButton) {
+        nextButton.addEventListener('click', showNextImage);
+    }
+    
+    // Close when clicking outside content
+    lightbox.addEventListener('click', function(e) {
+        if (e.target === lightbox) {
+            closeLightboxModal();
         }
-    ];
-    
-    if (experienceAccordion) {
-        experiences.forEach(exp => {
-            const item = document.createElement('div');
-            item.classList.add('accordion-item');
-            
-            item.innerHTML = `
-                <div class="accordion-header">
-                    <h4 class="accordion-title">${exp.title}</h4>
-                    <span class="accordion-icon">▼</span>
-                </div>
-                <div class="accordion-content">
-                    <p class="accordion-location">${exp.location}</p>
-                    <p class="accordion-description">${exp.description}</p>
-                </div>
-            `;
-            
-            experienceAccordion.appendChild(item);
-        });
-        
-        // Initialize accordion items
-        const newAccordionItems = document.querySelectorAll('.accordion-item');
-        newAccordionItems.forEach(item => {
-            const header = item.querySelector('.accordion-header');
-            
-            header.addEventListener('click', () => {
-                item.classList.toggle('active');
-            });
-        });
-    }
-    
-    // Updated Contact Form Submission
-    const contactForm = document.querySelector('.contact-form');
-    const formMessage = document.getElementById('form-message');
-
-    if (contactForm) {
-        contactForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const submitButton = this.querySelector('.form-submit');
-            const originalText = submitButton.textContent;
-            
-            // Show loading state
-            submitButton.textContent = 'Sending...';
-            submitButton.classList.add('loading');
-            
-            const formData = {
-                name: this.querySelector('#name').value,
-                email: this.querySelector('#email').value,
-                message: this.querySelector('#message').value
-            };
-
-            try {
-                const response = await fetch(`${API_BASE}/contact`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData)
-                });
-
-                const result = await response.json();
-                
-                if (result.success) {
-                    showFormMessage('Thank you for your message! I will get back to you soon.', 'success');
-                    this.reset();
-                } else {
-                    showFormMessage('There was an error sending your message. Please try again.', 'error');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                showFormMessage('There was an error sending your message. Please try again.', 'error');
-            } finally {
-                // Reset button
-                submitButton.textContent = originalText;
-                submitButton.classList.remove('loading');
-            }
-        });
-    }
-
-    function showFormMessage(message, type) {
-        if (formMessage) {
-            formMessage.textContent = message;
-            formMessage.className = `form-message ${type}`;
-            formMessage.style.display = 'block';
-            
-            // Hide message after 5 seconds
-            setTimeout(() => {
-                formMessage.style.display = 'none';
-            }, 5000);
-        }
-    }
-    
-    // Add hover effects to interactive elements
-    const interactiveElements = document.querySelectorAll('.timeline-content, .highlight-item, .experience-item');
-    interactiveElements.forEach(element => {
-        element.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-5px)';
-        });
-        
-        element.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
-        });
     });
     
-    // Initialize project functionality
-    initializeProjectButtons();
-});
+    // Close with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+            closeLightboxModal();
+        }
+        if (e.key === 'ArrowLeft' && lightbox.classList.contains('active')) {
+            showPrevImage();
+        }
+        if (e.key === 'ArrowRight' && lightbox.classList.contains('active')) {
+            showNextImage();
+        }
+    });
+}
 
 // Initialize project explore buttons
 function initializeProjectButtons() {
@@ -634,3 +357,275 @@ function showImageDetail(src, caption) {
         }
     });
 }
+
+// Main DOMContentLoaded event listener
+document.addEventListener('DOMContentLoaded', function() {
+    // Loader animation
+    const loader = document.querySelector('.loader');
+    const censoredText = document.querySelector('.censored-text');
+    const nav = document.querySelector('.main-nav');
+    
+    // Simulate loading
+    if (loader && censoredText && nav) {
+        setTimeout(() => {
+            censoredText.textContent = censoredText.getAttribute('data-text');
+            censoredText.style.color = '#e94560';
+            
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    nav.style.transform = 'translateY(0)';
+                }, 500);
+            }, 1000);
+        }, 1500);
+    }
+    
+    // Initialize lightbox first
+    initLightbox();
+    
+    // Typing effect for hero section - Updated words
+    const typingText = document.querySelector('.typing-text');
+    if (typingText) {
+        const words = ['Cultural Preservation', 'Social Justice', 'Documentary', 'Storytelling', 'Activism', 'Resilience', 'Change'];
+        let wordIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        let isEnd = false;
+        
+        function type() {
+            const currentWord = words[wordIndex];
+            const currentChar = currentWord.substring(0, charIndex);
+            typingText.textContent = currentChar;
+            
+            if (!isDeleting && charIndex < currentWord.length) {
+                charIndex++;
+                setTimeout(type, 100);
+            } else if (isDeleting && charIndex > 0) {
+                charIndex--;
+                setTimeout(type, 50);
+            } else {
+                isDeleting = !isDeleting;
+                if (!isDeleting) {
+                    wordIndex = (wordIndex + 1) % words.length;
+                }
+                setTimeout(type, 1000);
+            }
+        }
+        
+        setTimeout(type, 2000);
+    }
+    
+    // Navigation toggle for mobile
+    const navToggle = document.querySelector('.nav-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    
+    if (navToggle && navLinks) {
+        navToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    }
+    
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 100,
+                    behavior: 'smooth'
+                });
+                
+                // Close mobile menu if open
+                if (navLinks) {
+                    navLinks.classList.remove('active');
+                }
+            }
+        });
+    });
+    
+    // Work gallery filter
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    
+    if (filterButtons.length > 0 && galleryItems.length > 0) {
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                
+                // Add active class to clicked button
+                button.classList.add('active');
+                
+                const filterValue = button.getAttribute('data-filter');
+                
+                // Filter gallery items
+                galleryItems.forEach(item => {
+                    const categories = item.getAttribute('data-category').split(' ');
+                    if (filterValue === 'all' || categories.includes(filterValue)) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+    }
+    
+    // Update copyright year
+    const yearElement = document.querySelector('.year');
+    if (yearElement) {
+        yearElement.textContent = new Date().getFullYear();
+    }
+    
+    // Populate skills cloud - Updated skills
+    const skillsCloud = document.querySelector('.skills-cloud');
+    if (skillsCloud) {
+        const skills = [
+            'Documentary Filmmaking', 'Cultural Preservation', 'Social Justice', 'Storytelling',
+            'Photography', 'Videography', 'Color Grading', 'Sound Design', 
+            'Framing & Composition', 'Lighting Design', 'Video Editing', 'Sequencing',
+            'Narrative Development', 'Adobe Creative Suite', 'Digital Marketing',
+            'Arabic Language', 'Cross-Cultural Communication', 'Activism'
+        ];
+        
+        skills.forEach(skill => {
+            const skillTag = document.createElement('span');
+            skillTag.classList.add('skill-tag');
+            skillTag.textContent = skill;
+            skillsCloud.appendChild(skillTag);
+        });
+    }
+    
+    // Populate experience accordion - Updated experiences
+    const experienceAccordion = document.querySelector('.experience-accordion');
+    if (experienceAccordion) {
+        const experiences = [
+            {
+                title: 'Marketing Intern',
+                location: 'Genesee Valley Council for the Arts, Rochester, New York',
+                description: 'Creating design posters and shooting short reel videos to promote events throughout the year. Developing social media marketing strategies and visual content for cultural events and art exhibitions.'
+            },
+            {
+                title: 'Publicity Chair',
+                location: 'University of Rochester Film Club',
+                description: 'Marketing club events and participating in student film shoots as Gaffer, Art Team, Production Assistant, Boom Operator, and Grip. Organized promotional campaigns and managed social media presence for film screenings and events.'
+            },
+            {
+                title: 'Lighting Designer',
+                location: 'School Theater Productions',
+                description: 'Operated lighting board for school plays and developed understanding of color theory that now informs color grading decisions in film projects. Collaborated with directors to create atmospheric lighting that enhanced narrative storytelling.'
+            }
+        ];
+        
+        experiences.forEach(exp => {
+            const item = document.createElement('div');
+            item.classList.add('accordion-item');
+            
+            item.innerHTML = `
+                <div class="accordion-header">
+                    <h4 class="accordion-title">${exp.title}</h4>
+                    <span class="accordion-icon">▼</span>
+                </div>
+                <div class="accordion-content">
+                    <p class="accordion-location">${exp.location}</p>
+                    <p class="accordion-description">${exp.description}</p>
+                </div>
+            `;
+            
+            experienceAccordion.appendChild(item);
+        });
+        
+        // Initialize accordion items
+        const newAccordionItems = document.querySelectorAll('.accordion-item');
+        newAccordionItems.forEach(item => {
+            const header = item.querySelector('.accordion-header');
+            
+            header.addEventListener('click', () => {
+                item.classList.toggle('active');
+            });
+        });
+    }
+    
+    // Updated Contact Form Submission
+    const contactForm = document.querySelector('.contact-form');
+    const formMessage = document.getElementById('form-message');
+
+    if (contactForm && formMessage) {
+        contactForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitButton = this.querySelector('.form-submit');
+            const originalText = submitButton.textContent;
+            
+            // Show loading state
+            submitButton.textContent = 'Sending...';
+            submitButton.classList.add('loading');
+            
+            const formData = {
+                name: this.querySelector('#name').value,
+                email: this.querySelector('#email').value,
+                message: this.querySelector('#message').value
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/contact`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    showFormMessage('Thank you for your message! I will get back to you soon.', 'success');
+                    this.reset();
+                } else {
+                    showFormMessage('There was an error sending your message. Please try again.', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showFormMessage('There was an error sending your message. Please try again.', 'error');
+            } finally {
+                // Reset button
+                submitButton.textContent = originalText;
+                submitButton.classList.remove('loading');
+            }
+        });
+    }
+
+    function showFormMessage(message, type) {
+        if (formMessage) {
+            formMessage.textContent = message;
+            formMessage.className = `form-message ${type}`;
+            formMessage.style.display = 'block';
+            
+            // Hide message after 5 seconds
+            setTimeout(() => {
+                formMessage.style.display = 'none';
+            }, 5000);
+        }
+    }
+    
+    // Add hover effects to interactive elements
+    const interactiveElements = document.querySelectorAll('.timeline-content, .highlight-item, .experience-item');
+    interactiveElements.forEach(element => {
+        element.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px)';
+        });
+        
+        element.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+    
+    // Initialize project functionality
+    initializeProjectButtons();
+});
