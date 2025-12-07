@@ -77,8 +77,6 @@ const projects = {
 
 // Simple Lightbox functionality
 function initLightbox() {
-    console.log('Initializing lightbox...');
-    
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
     const lightboxCaption = document.getElementById('lightbox-caption');
@@ -94,110 +92,61 @@ function initLightbox() {
         return;
     }
     
-    console.log('Lightbox found:', lightbox);
-    console.log('Lightbox image found:', lightboxImg);
-    
-    let currentImageIndex = 0;
-    let images = [];
-    
-    // Function to show image in lightbox
+    // Function to show image in lightbox with controlled size
     function showImageLightbox(src, caption) {
-        console.log('Showing image in lightbox:', src, caption);
-        
+        // Set the image source
         lightboxImg.src = src;
         lightboxImg.alt = caption || '';
         
+        // Set caption if it exists
         if (lightboxCaption) {
             lightboxCaption.textContent = caption || '';
         }
         
+        // Show lightbox
         lightbox.style.display = 'flex';
         document.body.style.overflow = 'hidden'; // Prevent scrolling
         
-        // Add active class for CSS transitions
-        lightbox.classList.add('active');
+        // Add a class to control the image size
+        lightboxImg.style.maxWidth = '80vw';
+        lightboxImg.style.maxHeight = '80vh';
+        lightboxImg.style.width = 'auto';
+        lightboxImg.style.height = 'auto';
+        lightboxImg.style.objectFit = 'contain';
     }
     
     function closeLightboxModal() {
-        console.log('Closing lightbox');
         lightbox.style.display = 'none';
-        lightbox.classList.remove('active');
         document.body.style.overflow = ''; // Re-enable scrolling
-        images = [];
-        currentImageIndex = 0;
     }
     
-    // Debug: Check how many gallery items we have
-    const galleryItems = document.querySelectorAll('.gallery-item');
-    console.log('Found gallery items:', galleryItems.length);
-    
-    // Make all gallery items clickable - SIMPLE VERSION
-    galleryItems.forEach((item, index) => {
-        console.log('Setting up gallery item', index, item);
-        
+    // Make ENTIRE gallery items clickable
+    document.querySelectorAll('.gallery-item').forEach((item, index) => {
         // Find the image inside this gallery item
         const img = item.querySelector('img');
         
         if (img) {
-            console.log('Found image in gallery item', index, img.src);
-            
-            // Make both the image and the gallery item clickable
-            img.style.cursor = 'pointer';
+            // Make the entire gallery item clickable
             item.style.cursor = 'pointer';
+            item.style.position = 'relative'; // Ensure proper positioning
             
-            // Add click event to the image
-            img.addEventListener('click', function(e) {
-                console.log('Image clicked:', this.src);
-                e.preventDefault();
-                e.stopPropagation();
-                
-                // Get all images in the gallery
-                images = Array.from(document.querySelectorAll('.gallery-item img'));
-                currentImageIndex = images.indexOf(this);
-                
-                const caption = this.getAttribute('data-caption') || this.alt;
-                showImageLightbox(this.src, caption);
-            });
+            // Remove any pointer-events: none from caption
+            const caption = item.querySelector('.gallery-item-caption');
+            if (caption) {
+                caption.style.pointerEvents = 'none'; // Allow clicks to pass through
+            }
             
-            // Add click event to the entire gallery item
+            // Add click event to the ENTIRE gallery item
             item.addEventListener('click', function(e) {
-                // Only trigger if clicked on the item itself (not on the image which has its own handler)
-                if (e.target === this || e.target.classList.contains('gallery-item-caption')) {
-                    console.log('Gallery item clicked');
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    const img = this.querySelector('img');
-                    if (img) {
-                        // Get all images in the gallery
-                        images = Array.from(document.querySelectorAll('.gallery-item img'));
-                        currentImageIndex = images.indexOf(img);
-                        
-                        const caption = img.getAttribute('data-caption') || img.alt;
-                        showImageLightbox(img.src, caption);
-                    }
-                }
-            });
-        } else {
-            console.log('No image found in gallery item', index);
-        }
-    });
-    
-    // Debug: Check how many direct images we have
-    const directImages = document.querySelectorAll('.gallery-item img');
-    console.log('Found direct images in gallery items:', directImages.length);
-    
-    // Make gallery videos clickable
-    document.querySelectorAll('.gallery-item .video-container').forEach(container => {
-        const iframe = container.querySelector('iframe');
-        if (iframe) {
-            container.style.cursor = 'pointer';
-            container.addEventListener('click', function(e) {
+                // Don't prevent default if it's a link, but we don't have links here
                 e.preventDefault();
                 e.stopPropagation();
-                console.log('Video clicked:', iframe.src);
-                // For videos, we'll just open in a new tab for now
-                window.open(iframe.src, '_blank');
+                
+                const img = this.querySelector('img');
+                if (img) {
+                    const caption = img.getAttribute('data-caption') || img.alt;
+                    showImageLightbox(img.src, caption);
+                }
             });
         }
     });
@@ -209,7 +158,7 @@ function initLightbox() {
     
     // Close when clicking outside the image
     lightbox.addEventListener('click', function(e) {
-        if (e.target === lightbox) {
+        if (e.target === lightbox || e.target.classList.contains('lightbox-content')) {
             closeLightboxModal();
         }
     });
@@ -362,7 +311,7 @@ function showImageDetail(src, caption) {
                 font-size: 1.2rem;
                 z-index: 2001;
             ">×</button>
-            <img src="${src}" style="max-width: 100%; max-height: 80vh; object-fit: contain;">
+            <img src="${src}" style="max-width: 80vw; max-height: 80vh; width: auto; height: auto; object-fit: contain;">
             ${caption ? `<div style="color: white; text-align: center; margin-top: 1rem;">${caption}</div>` : ''}
         </div>
     `;
@@ -382,8 +331,6 @@ function showImageDetail(src, caption) {
 
 // Main DOMContentLoaded event listener
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM fully loaded');
-    
     // Loader animation
     const loader = document.querySelector('.loader');
     const censoredText = document.querySelector('.censored-text');
@@ -406,8 +353,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 1500);
     }
     
-    // Initialize lightbox FIRST
-    console.log('Initializing lightbox...');
+    // Initialize lightbox FIRST - this is critical
     initLightbox();
     
     // Typing effect for hero section - Updated words
@@ -653,12 +599,4 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize project functionality
     initializeProjectButtons();
-    
-    // Test: Add a simple click handler to verify
-    console.log('Adding test click handler...');
-    document.querySelectorAll('.gallery-item img').forEach(img => {
-        img.addEventListener('click', function() {
-            console.log('TEST: Image clicked:', this.src);
-        });
-    });
 });
