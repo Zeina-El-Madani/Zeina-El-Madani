@@ -475,18 +475,18 @@ document.addEventListener('DOMContentLoaded', function() {
         const experiences = [
             {
                 title: 'Marketing Intern',
-                location: 'Genesee Valley Council for the Arts, Rochester, New York',
-                description: 'Creating design posters and shooting short reel videos to promote events throughout the year. Developing social media marketing strategies and visual content for cultural events and art exhibitions.'
+                location: 'I worked at Genesee Valley Council for the Arts, Rochester, New York',
+                description: 'I was creating design posters and shooting short reel videos to promote events throughout the year. I was developing social media marketing strategies and visual content for cultural events and art exhibitions.'
             },
             {
                 title: 'Publicity Chair',
                 location: 'University of Rochester Film Club',
-                description: 'Marketing club events and participating in student film shoots as Gaffer, Art Team, Production Assistant, Boom Operator, and Grip. Organized promotional campaigns and managed social media presence for film screenings and events.'
+                description: 'I was marketing club events and participating in student film shoots as Gaffer, Art Team, Production Assistant, Boom Operator, and Grip. I organized promotional campaigns and managed social media presence for film screenings and events.'
             },
             {
                 title: 'Lighting Designer',
-                location: 'School Theater Productions',
-                description: 'Operated lighting board for school plays and developed understanding of color theory that now informs color grading decisions in film projects. Collaborated with directors to create atmospheric lighting that enhanced narrative storytelling.'
+                location: 'Theater Productions',
+                description: 'I operated lighting board for theatre plays (Beauty and the Beast, How to Survive a Zombie Apocalypse) and developed understanding of color theory that now informs color grading decisions in film projects. I collaborated with directors to create atmospheric lighting that enhanced narrative storytelling.'
             }
         ];
         
